@@ -36,10 +36,14 @@ Docker是一个虚拟环境容器，可以将你的开发环境、代码、配�
         
     Usage:  docker inspect [OPTIONS] NAME|ID [NAME|ID...]
 
+* docker tag : docker tag [OPTIONS] IMAGE[:TAG] [REGISTRYHOST/][USERNAME/]NAME[:TAG]
+
+    相当于给一个旧标签指向的镜像贴上新标签
+
 ### Docker 中关于容器的基本操作
-* docker run 命令常用参数：
-    -i : 表示打开并保持stdout
-    -t : 表示分配一个终端
+* docker run 命令常用参数：<br>
+    -i : 表示打开并保持stdout<br>
+    -t : 表示分配一个终端<br>
     -d：后台运行。使这个容器处于后台运行的状态，不会对当前终端产生任何输出，所有的stdout都输出到log
 
 ### Docker 中关于仓库的基本操作
@@ -49,6 +53,72 @@ Docker官方维护了一个DockerHub的公共仓库，里边包含有很多平�
 1. 利用 docker login 登录 DockerHub
 2. 利用 docker push 将本地的镜像推送到远程的DockerHub上。
     注意：只有路径名等于username的push请求才能推送成功。
+
+## Dockerfile 指令详解
+### From指定基础镜像
+所谓定制镜像，那一定是以一个镜像为基础，在其上进行定制。就像我们之前运行了一个 nginx 镜像的容器，再进行修改一样，基础镜像是必须指定的。而 FROM 就是指定基础镜像，因此一个 Dockerfile 中 FROM 是必备的指令，并且必须是第一条指令。
+### RUN 执行命令
+RUN 指令是用来执行命令行命令的。由于命令行的强大能力，RUN 指令在定制镜像时是最常用的指令之一。其格式有两种：
+*  shell 格式：RUN <命令>，就像直接在命令行中输入的命令一样。刚才写的 Dockerfile 中的 RUN 指令就是这种格式。
+* exec 格式：RUN ["可执行文件", "参数1", "参数2"]，这更像是函数调用中的格式。
+
+## 数据管理
+### 数据卷
+ 数据卷 是一个可供一个或多个容器使用的特殊目录，它绕过 UFS，可以提供很多有用的特性：
+
+* 数据卷 可以在容器之间共享和重用
+
+* 对 数据卷 的修改会立马生效
+
+* 对 数据卷 的更新，不会影响镜像
+
+* 数据卷 默认会一直存在，即使容器被删除
+
+#### 数据卷的创建及查看
+
+        docker volume create my-vol
+        docker volume ls
+        docker volume inspect my-vol
+
+#### 启动一个挂载数据卷的容器
+        docker run --mount source=my-vol,target=xxx xxx 
+#### 删除数据卷
+
+        docker volume rm my-vol
+
+数据卷 是被设计用来持久化数据的，它的生命周期独立于容器，Docker 不会在容器被删除后自动删除 数据卷，并且也不存在垃圾回收这样的机制来处理没有任何容器引用的 数据卷。如果需要在删除容器的同时移除数据卷。可以在删除容器的时候使用 docker rm -v 这个命令。
+### 挂载主机目录
+使用 --mount 标记可以指定挂载一个本地主机的目录到容器中去。
+
+        $ docker run -d -P \
+        --name web \
+        # -v /src/webapp:/opt/webapp \
+        --mount type=bind,source=/src/webapp,target=/opt/webapp \
+        training/webapp \
+        python app.py
+
+--mount 标记也可以从主机挂载单个文件到容器中
+
+## 使用网络
+### 外部访问容器
+容器中可以运行一些网络应用，要让外部也可以访问这些应用，可以通过 -P 或 -p 参数来指定端口映射。
+
+当使用 -P 标记时，Docker 会随机映射一个 49000~49900 的端口到内部容器开放的网络端口。
+
+使用 docker container ls 可以看到，本地主机的 49155 被映射到了容器的 5000 端口。此时访问本机的 49155 端口即可访问容器内 web 应用提供的界面。
+
+### 容器互联
+使用 Docker 网络来连接多个容器
+
+#### 新建网络
+
+        docker network create -d bridge my-net
+-d 参数指定 Docker 网络类型，有 bridge overlay。其中 overlay 网络类型用于 Swarm mode，在本小节中你可以忽略它。
+
+#### 连接容器
+通过 --network my-net 将容器连接到网络中。
+    
+
 
 ## Docker 其他信息
 ### Docker 生命周期
@@ -61,7 +131,7 @@ Docker官方维护了一个DockerHub的公共仓库，里边包含有很多平�
 2. 环境一致性难以保证。
 3. 不同环境之间迁移成本太高。
 <br>
-Docker这个虚拟机超级轻量级，仅仅是一个进程而已。与传统的虚拟机比如VM有着巨大的差别，区别看下图：
+    Docker这个虚拟机超级轻量级，仅仅是一个进程而已。与传统的虚拟机比如VM有着巨大的差别，区别看下图：
 <br>
 ![](https://pic4.zhimg.com/v2-70b8e8e12a5a35aa3a55c0cf56b07b8f_b.jpg)
 
@@ -86,3 +156,5 @@ Docker这个虚拟机超级轻量级，仅仅是一个进程而已。与传统�
 ## 阅读材料
 [如何通俗解释<em>Docker</em>是什么？ - 刘允鹏的回答 - 知乎](https://www.zhihu.com/question/28300645/answer/67707287) <br>
 [【 全干货 】5 分钟带你看懂 <em>Docker</em> ！ - 腾讯云技术社区的文章 - 知乎](https://zhuanlan.zhihu.com/p/30713987)
+[Docker — 从入门到实践](https://github.com/yeasy/docker_practice)
+https://yeasy.gitbooks.io/docker_practice/
