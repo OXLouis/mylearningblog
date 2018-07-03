@@ -11,23 +11,23 @@ Docker是一个虚拟环境容器，可以将你的开发环境、代码、配�
 * docker pull centos    # 利用pull命令获取镜像
 * docker images    # 查看当前系统中的images信息
 * docker ps #列出当前运行的容器 , 加上-a 显示全部
-* docker commit : 通过容器导出镜像 
-    Usage:  docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]
-* docker run: 通过镜像产生容器 
-    Usage:  docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
+* docker commit : 通过容器导出镜像
+        Usage:  docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]
+* docker run: 通过镜像产生容器
+        Usage:  docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
 * docker build: Build an image from a Dockerfile
-    Usage:  docker build [OPTIONS] PATH | URL | -
-    -t用来指定新镜像的用户信息、tag等
+        Usage:  docker build [OPTIONS] PATH | URL | -
+        -t用来指定新镜像的用户信息、tag等
 * docker rm: Remove one or more containers
-    Usage:  docker rm [OPTIONS] CONTAINER [CONTAINER...]
+        Usage:  docker rm [OPTIONS] CONTAINER [CONTAINER...]
 * docker rmi: Remove one or more images
-    Usage:  docker rmi [OPTIONS] IMAGE [IMAGE...]
+        Usage:  docker rmi [OPTIONS] IMAGE [IMAGE...]
 * Dockerfile可以理解为一种配置文件，用来告诉docker build命令应该执行哪些操作。
 * docker start container_name/container_id
 * docker stop container_name/container_id
 * docker restart container_name/container_id
 * docker inspect : Return low-level information on Docker objects
-    Usage:  docker inspect [OPTIONS] NAME|ID [NAME|ID...]
+        Usage:  docker inspect [OPTIONS] NAME|ID [NAME|ID...]
 
 ### Docker 中关于容器的基本操作
 * docker run 命令常用参数：
