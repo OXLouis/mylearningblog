@@ -30,13 +30,13 @@ Docker是一个虚拟环境容器，可以将你的开发环境、代码、配�
 * docker inspect : Return low-level information on Docker objects
     Usage:  docker inspect [OPTIONS] NAME|ID [NAME|ID...]
 
-## Docker 中关于容器的基本操作
+### Docker 中关于容器的基本操作
 * docker run 命令常用参数：
     -i : 表示打开并保持stdout
     -t : 表示分配一个终端
     -d：后台运行。使这个容器处于后台运行的状态，不会对当前终端产生任何输出，所有的stdout都输出到log
 
-## Docker 中关于仓库的基本操作
+### Docker 中关于仓库的基本操作
 Docker官方维护了一个DockerHub的公共仓库，里边包含有很多平时用的较多的镜像。除了从上边下载镜像之外，我们也可以将自己自定义的镜像发布（push）到DockerHub上。
 <br>
 上传镜像步骤
