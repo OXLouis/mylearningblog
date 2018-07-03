@@ -139,4 +139,6 @@ exit()方法中有３个参数， exc_type, exc_val, exc_tb，这些参数在异
 
 ### 引用
 [Python之列表生成式、生成器、可迭代对象与迭代器](https://www.cnblogs.com/yyds/p/6281453.html)
+<br>
+[Python 函数的艺术：高阶函数](https://juejin.im/entry/5879a5281b69e6006be00563)
 
