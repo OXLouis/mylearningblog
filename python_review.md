@@ -22,7 +22,7 @@
     Optional argument k2 (*kwargs): 6
     Optional argument k1 (*kwargs): 5
 
-*args和**kwargs语法不仅可以在函数定义中使用，同样可以在函数调用的时候使用。不同的是，如果说在函数定义的位置使用*args和**kwargs是一个将参数pack的过程，那么在函数调用的时候就是一个将参数unpack的过程了。
+`*args和**kwargs`不仅可以在函数定义中使用，同样可以在函数调用的时候使用。不同的是，如果说在函数定义的位置使用`*args和**kwargs`是一个将参数pack的过程，那么在函数调用的时候就是一个将参数unpack的过程了。
 
     def test_args(first, second, third, fourth, fifth):
         print 'First argument: ', first
@@ -106,17 +106,17 @@ exit()方法中有３个参数， exc_type, exc_val, exc_tb，这些参数在异
 1. 作用：
 按照某种算法不断生成新的数据，直到满足某一个指定的条件结束。
 2. 构造方式:
-* 使用类似列表生成式的方式生成 (2*n + 1 for n in range(3, 11))
-* 使用包含yield的函数来生成
+    * 使用类似列表生成式的方式生成 (2*n + 1 for n in range(3, 11))
+    * 使用包含yield的函数来生成
 3. 生成器的执行过程：<br>
 在执行过程中，遇到yield关键字就会中断执行，下次调用则继续从上次中断的位置继续执行。
 4. 生成器的特性：
-* 只有在调用时才会生成相应的数据
-* 只记录当前的位置
-* 只能next，不能prev
+    * 只有在调用时才会生成相应的数据
+    * 只记录当前的位置
+    * 只能next，不能prev
 5. 生成器的调用方式:
-* 调用内置的next()方法
-* 使用循环对生成器对象进行遍历
+    * 调用内置的next()方法
+    * 使用循环对生成器对象进行遍历
 
 ### 装饰器
 1. 粗鄙之语解释装饰器：<br>
