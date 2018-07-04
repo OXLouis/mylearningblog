@@ -148,10 +148,10 @@ manager 是swarm中唯一可以执行命令的机器，他还可以授权其他�
 * 通过docker-machine ssh 给虚拟机下达命令
 * 通过docker-machine env 命令来配置当前的shell直接在对应的虚拟机上运行命令。这种方式会比ssh更合适因为它允许使用本地的docker-compose.yml文件去部署远端的应用，不需要复制。
 ### routing mesh
-    这个技术使得集群中不管有没有应用副本的节点，都可以通过swarm负载均衡器定位到运行应用副本的节点。
-    <br>
-    ![](https://docs.docker.com/engine/swarm/images/ingress-routing-mesh.png)
-    <br>
+这个技术使得集群中不管有没有应用副本的节点，都可以通过swarm负载均衡器定位到运行应用副本的节点。
+<br>
+![](https://docs.docker.com/engine/swarm/images/ingress-routing-mesh.png)
+<br>
     
 ### stack
 stack 是一组依赖相同且互相关联的services，可以一起协作和scale（放缩）。一个stack就足以定义和协调整个应用的所有功能（虽然很多复杂的应用会用到多个stacks）
