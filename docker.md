@@ -118,6 +118,44 @@ RUN 指令是用来执行命令行命令的。由于命令行的强大能力，R
 #### 连接容器
 通过 --network my-net 将容器连接到网络中。
     
+## Services
+### services简介
+services 就是 “生产中的容器”。 一个service 只对应一个镜像，但是它编码了镜像的运行方式——决定用哪一个端口，产生多少个容器可以满足service的需要。services中每一个单独的容器叫做task<br>
+放缩（放大或缩小）一个service可以通过改变容器数量，改变分配资源数量实现。
+<br>
+services 可以部署在单机上也可以部署在swarm上
+### 配置docker-compose.yml文件
+    services 通过 这个文件 配置 多个容器构成的集群。
+    过程见：[Get Started, Part 3: Services](https://docs.docker.com/get-started/part3/#docker-composeyml)
+### services相关简单操作
+    docker stack ls                                            # List stacks or apps
+    docker stack deploy -c <composefile> <appname>  # Run the specified Compose file
+    docker service ls                 # List running services associated with an app
+    docker service ps <service>                  # List tasks associated with an app
+    docker inspect <task or container>                   # Inspect task or container
+    docker container ls -q                                      # List container IDs
+    docker stack rm <appname>                             # Tear down an application
+    docker swarm leave --force      # Take down a single node swarm from the manager
+
+## Swarms
+ Swarm 是加入了一个集群集体运行docker的一组机器。创建集群之后，你仍然使用之前的docker命令，但是这些命令现在由 __swarm manager__ 在集群上执行。swarm中的机器可以是实体机也可以是虚拟机，加入swarm之后，他们被归为 **nodes**。
+<br>
+Swarm manager 有多种策略调度节点，比如最空节点优先，或者global（保证每一个节点上对每一个镜像都存在一个对应的容器）
+manager 是swarm中唯一可以执行命令的机器，他还可以授权其他机器加入swarm成为worker。worker只提供服务但是不会告诉其他机器它能做什么不能做什么。
+### 建立swarm
+* docker swarm init 打开swarm模式，并使得当前机器成为一个swarm manager
+* 通过docker swarm join 命令加入worker
+* 通过docker-machine ssh 给虚拟机下达命令
+* 通过docker-machine env 命令来配置当前的shell直接在对应的虚拟机上运行命令。这种方式会比ssh更合适因为它允许使用本地的docker-compose.yml文件去部署远端的应用，不需要复制。
+### routing mesh
+    这个技术使得集群中不管有没有应用副本的节点，都可以通过swarm负载均衡器定位到运行应用副本的节点。
+    <br>
+    ![](https://docs.docker.com/engine/swarm/images/ingress-routing-mesh.png)
+    <br>
+    
+### stack
+stack 是一组依赖相同且互相关联的services，可以一起协作和scale（放缩）。一个stack就足以定义和协调整个应用的所有功能（虽然很多复杂的应用会用到多个stacks）
+    
 
 
 ## Docker 其他信息
