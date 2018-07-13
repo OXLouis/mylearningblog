@@ -1,11 +1,13 @@
 # mongoDB入门
 ### 实验环境
     通过以下命令：
-        docker run --name mongotest \
+        docker run  -d --name mongotest \
         -p 27017:27017 \
         -v ~\data\db:\data\db \
         mongo
 创建了一个端口映射，同时通过数据卷实现可持久化的mongo微型服务器。
+通过 以下命令将mongo添加到path中。<br>
+export PATH=/usr/local/mongodb/bin:$PATH
 
 ## 基础概念
 ![](http://chuantu.biz/t6/338/1530758357x1822614020.png)

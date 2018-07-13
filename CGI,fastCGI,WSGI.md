@@ -1,0 +1,1 @@
+[聊聊CGI、FastCGI、WSGI](https://www.jianshu.com/p/1f8aec6f2bd1)

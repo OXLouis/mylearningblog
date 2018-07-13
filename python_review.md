@@ -137,6 +137,44 @@ exit()方法中有３个参数， exc_type, exc_val, exc_tb，这些参数在异
     3. 缺点就是原函数的元信息会丢失，可以通过wraps装饰器来拷贝。
     4. 装饰器顺序由下到上，由里到外。
 
+### 常用装饰器介绍
+
+#### property 
+负责把一个方法变成属性调用。
+和另一个装饰器 @arg.setter成对使用。如果没有setter就是一个只读属性。
+例子： [使用@property](https://www.liaoxuefeng.com/wiki/001374738125095c955c1e6d8bb493182103fac9270762a000/001386820062641f3bcc60a4b164f8d91df476445697b9e000#0)
+
+#### wraps
+Python装饰器（decorator）在实现的时候，被装饰后的函数其实已经是另外一个函数了（函数名等函数属性会发生改变），为了不影响，Python的functools包中提供了一个叫wraps的decorator来消除这样的副作用。写一个decorator的时候，最好在实现之前加上functools的wraps，它能保留原有函数的名称和docstring。
+
+
+## python 面向对象编程
+### 类和实例
+实例可以直接定义不在类模板中出现的属性，当做自身特有的属性。
+### 访问限制
+* 如果想让内部属性不被外部访问，可以把属性的名称前加上两个下划线__，在Python中，实例的变量名如果以双下划线开头，就变成了一个私有变量(private)，只有内部可以访问，外部不能访问。
+* Python中如果变量名以双下划线开头和结尾的，是特殊变量__XXX__。特殊变量是可以直接从类内部访问的。
+* 有些时候，你会看到以一个下划线开头的实例变量名，比如_name，这样的实例变量外部是可以访问的，但不能导入。
+* 不能直接访问__name是因为Python解释器对外把__name变量改成了_Student__name，所以，仍然可以通过_Student__name来访问__name变量。
+* Python的访问限制其实并不严格，主要靠自觉。
+### Mixin
+Mixin 表示混入，理解上应该理解为作为功能将Mixin添加到子类中，而不是作为子类的父类。
+1. mixin类必须表示一组功能。
+2. 必须责任单一
+3. 不依赖于子类的实现
+4. 子类没有mixin也可以工作，只是少了某些功能。
+### python 类中特殊方法
+#### __init__
+初始类对象，相当于C++里面的构造函数。
+
+#### __call__
+把类对象作为一个函数调用时，执行的函数。
+
+#### __get__,__getattr__,__getattribute__
+参考：[python3中__get__,__getattr__,__getattribute__的区别](https://www.cnblogs.com/Vito2008/p/5280216.html)
+
+
+
 ### 引用
 [Python之列表生成式、生成器、可迭代对象与迭代器](https://www.cnblogs.com/yyds/p/6281453.html)
 <br>
