@@ -73,16 +73,12 @@ ObjectId 类似唯一主键，可以很快的去生成和排序，包含 12 byte
 3. 紧接的两个字节由进程 id 组成 PID
 4. 最后三个字节是随机数
 
-### 基本语法
+### 基本操作
+[MongoDB学习（四）常用操作命令](https://blog.csdn.net/qq_16313365/article/details/52313987)
+[https://blog.csdn.net/qq_16313365/article/details/58599253](https://blog.csdn.net/qq_16313365/article/details/58599253)
     
-    use DATABASE_NAME
-    show dbs\tables
-
-    db.DATABASE_NAME.insert({})
-    db.dropDatabase()
-    db.COLLECTION_NAME.drop()
-    
-    
+### pymongo的基本操作
+[pymongo基本操作](https://www.cnblogs.com/descusr/archive/2011/11/15/2249391.html)
 
 #### 增
 * db.createCollection(name, options) #直接向不存在集合插入也可以创建集合
@@ -97,7 +93,7 @@ ObjectId 类似唯一主键，可以很快的去生成和排序，包含 12 byte
 ***
 #### 改
     db.collection.update(
-        <query>,
+        <query1>,
         <update>,
         {
             upsert: <boolean>,
@@ -142,5 +138,79 @@ type操作符
 <img src=http://chuantu.biz/t6/338/1530772652x1822614026.png />
 <br>
 
+find中and和or的用法：
+```javascript
+db.col.find({"likes": {$gt:50}, $or: [{"by": "菜鸟教程"},{"title": "MongoDB 教程"}]}).pretty()
+```
+
+#### limit与skip
+limit: 用于限制返回结果数量。  
+```javascript
+db.COLLECTION_NAME.find().limit(NUMBER)
+```
+skip: 用于跳过指定数量的返回结果。
+```javascript
+db.COLLECTION_NAME.find().limit(NUMBER).skip(NUMBER)
+```
+通过limit和skip可以实现分页。limit和skip其实通过游标实现。
+
+#### MongoDB聚合
+使用aggregate()方法中设置group参数实现聚合。  
+示例：  
+```javascript
+db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$sum : "$likes"}}}])
+```
+但aggregate()真正的作用是通过管道连接多层处理。  
+![](https://img-blog.csdn.net/20160609100534149?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center)
+
+每个阶段管道限制为100M的内存。几个常用的等级：
+1. $project：修改输入文档的结构。可以用来重命名、增加或删除域，也可以用于创建计算结果以及嵌套文档。
+2. $match：用于过滤数据，只输出符合条件的文档。$match使用MongoDB的标准查询操作。
+3. $limit：用来限制MongoDB聚合管道返回的文档数。
+4. $skip：在聚合管道中跳过指定数量的文档，并返回余下的文档。
+* $unwind：将文档中的某一个数组类型字段拆分成多条，每条包含数组中的一个值。
+* $group：将集合中的文档分组，可用于统计结果。
+* $sort：将输入文档排序后输出。
+* $geoNear：输出接近某一地理位置的有序文档。
+* $out: 将结果输出到对应的collection中。必须是最后一个管道。
+https://blog.csdn.net/congcong68/article/details/51620040
+
+#### sort方法
+指定参数，1升序，-1降序
+```javascript
+db.COLLECTION_NAME.find().sort({KEY:1})
+```
+
+
+### MongoDB索引
+MongoDB使用 createIndex() 方法来创建索引。
+MongoDB建造索引用的数据结构是B-树。
+```javascript
+db.collection.createIndex(keys, options)
+```
+设置多个字段创建索引可以创建复合索引。  
+可选接受参数列表如下: 
+<img src=http://chuantu.biz/t6/344/1531797192x-1566673375.png />   
+
+#### 为什么MongoDB选择B-树
+B+树内节点不存储数据，所有 data 存储在叶节点导致查询时间复杂度固定为 log n。而B-树查询时间复杂度不固定，与 key 在树中的位置有关，最好为O(1)  
+我们说过，尽可能少的磁盘 IO 是提高性能的有效手段。MongoDB 是聚合型数据库，而 B-树恰好 key 和 data 域聚合在一起。  
+
+#### 为什么Mysql使用B+树
+Mysql 是一种关系型数据库，区间访问是常见的一种情况，而 B-树并不支持区间访问（可参见上图），而B+树由于数据全部存储在叶子节点，并且通过指针串在一起，这样就很容易的进行区间遍历甚至全部遍历。
+
+###MongoDB 数组元素增删查改
+[MongoDB 数组元素查询](https://blog.csdn.net/leshami/article/details/55049891)  
+包括模糊匹配，精确匹配，返回指定文档。
+数组中的$elemMatch和$all相当于离散数学中存在一个，和任意的关系。  
+1. 数组查询有精确和模糊之分，精确匹配需要指定数据元素的全部值 
+2. 数组查询可以通过下标的方式进行查询 
+3. 数组内嵌套文档可以通过.成员的方式进行查询 
+4. 数组至少一个元素满足所有指定的匹配条件可以使用$elemMatch 
+5. 数组查询中返回元素的子集可以通过$slice以及占位符来实现6. all满足所有指定的匹配条件，不考虑多出的元素以及元素顺序问题
+[MongoDB 数组元素增删改](https://blog.csdn.net/leshami/article/details/55192965)
+
+###MongoDB 副本集
+[MongoDB复制集原理](http://www.mongoing.com/archives/2155)
 
 
